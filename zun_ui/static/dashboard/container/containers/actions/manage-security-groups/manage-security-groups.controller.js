@@ -168,34 +168,39 @@
     }
 
     function onGetPorts(ports, network) {
+      const knownDeviceOwners = ["compute:kuryr", "k8s:cni"];
       ports.data.items.forEach(function(port) {
-        // no device_owner or compute:kuryr means that the port can be associated
-        // with security group
-        if ((port.device_owner === "" || port.device_owner === "compute:kuryr") &&
-          port.admin_state === "UP") {
-          port.subnet_names = getPortSubnets(port, network.subnets);
-          port.network_name = network.name;
-          if ($scope.model.ports.includes(port.id)) {
-            var portName = port.network_name + " - " + port.subnet_names + " - " + port.name;
-            ctrl.availablePorts.push({
-              id: port.id,
-              name: portName});
-            port.security_groups.forEach(function (sgId) {
-              var sgName;
-              ctrl.availableSecurityGroups.forEach(function (sg) {
-                if (sgId === sg.id) {
-                  sgName = sg.name;
-                }
-              });
-              $scope.model.port_security_groups.push({
-                id: port.id + " " + sgId,
-                port: port.id,
-                port_name: portName,
-                security_group: sgId,
-                security_group_name: sgName
-              });
+        if (port.admin_state !== "UP") {
+          return;
+        }
+
+        // ignore ports that are managed by other systems (e.g., Neutron, Nova)
+        if (port.device_owner && ! knownDeviceOwners.includes(port.device_owner)) {
+          return
+        }
+
+        port.subnet_names = getPortSubnets(port, network.subnets);
+        port.network_name = network.name;
+        if ($scope.model.ports.includes(port.id)) {
+          var portName = port.network_name + " - " + port.subnet_names + " - " + port.name;
+          ctrl.availablePorts.push({
+            id: port.id,
+            name: portName});
+          port.security_groups.forEach(function (sgId) {
+            var sgName;
+            ctrl.availableSecurityGroups.forEach(function (sg) {
+              if (sgId === sg.id) {
+                sgName = sg.name;
+              }
             });
-          }
+            $scope.model.port_security_groups.push({
+              id: port.id + " " + sgId,
+              port: port.id,
+              port_name: portName,
+              security_group: sgId,
+              security_group_name: sgName
+            });
+          });
         }
       });
     }
