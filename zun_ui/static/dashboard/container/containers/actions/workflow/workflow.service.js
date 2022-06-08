@@ -345,62 +345,62 @@
                 }
               ]
             },
-            {
-              "title": gettext("Volumes"),
-              help: basePath + "containers/actions/workflow/mounts/mounts.help.html",
-              type: "section",
-              htmlClass: "row",
-              items: [
-                {
-                  type: "section",
-                  htmlClass: "col-xs-12",
-                  items: [
-                    {
-                      type: "template",
-                      templateUrl: basePath + "containers/actions/workflow/mounts/mounts.html"
-                    }
-                  ]
-                }
-              ],
-              condition: action === "update"
-            },
-            {
-              "title": gettext("Networks"),
-              help: basePath + "containers/actions/workflow/networks/networks.help.html",
-              type: "section",
-              htmlClass: "row",
-              items: [
-                {
-                  type: "section",
-                  htmlClass: "col-xs-12",
-                  items: [
-                    {
-                      type: "template",
-                      templateUrl: basePath + "containers/actions/workflow/networks/networks.html"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "title": gettext("Ports"),
-              help: basePath + "containers/actions/workflow/ports/ports.help.html",
-              type: "section",
-              htmlClass: "row",
-              items: [
-                {
-                  type: "section",
-                  htmlClass: "col-xs-12",
-                  items: [
-                    {
-                      type: "template",
-                      templateUrl: basePath + "containers/actions/workflow/ports/ports.html"
-                    }
-                  ]
-                }
-              ],
-              condition: action === "update"
-            },
+            // {
+            //   "title": gettext("Volumes"),
+            //   help: basePath + "containers/actions/workflow/mounts/mounts.help.html",
+            //   type: "section",
+            //   htmlClass: "row",
+            //   items: [
+            //     {
+            //       type: "section",
+            //       htmlClass: "col-xs-12",
+            //       items: [
+            //         {
+            //           type: "template",
+            //           templateUrl: basePath + "containers/actions/workflow/mounts/mounts.html"
+            //         }
+            //       ]
+            //     }
+            //   ],
+            //   condition: action === "update"
+            // },
+            // {
+            //   "title": gettext("Networks"),
+            //   help: basePath + "containers/actions/workflow/networks/networks.help.html",
+            //   type: "section",
+            //   htmlClass: "row",
+            //   items: [
+            //     {
+            //       type: "section",
+            //       htmlClass: "col-xs-12",
+            //       items: [
+            //         {
+            //           type: "template",
+            //           templateUrl: basePath + "containers/actions/workflow/networks/networks.html"
+            //         }
+            //       ]
+            //     }
+            //   ]
+            // },
+            // {
+            //   "title": gettext("Ports"),
+            //   help: basePath + "containers/actions/workflow/ports/ports.help.html",
+            //   type: "section",
+            //   htmlClass: "row",
+            //   items: [
+            //     {
+            //       type: "section",
+            //       htmlClass: "col-xs-12",
+            //       items: [
+            //         {
+            //           type: "template",
+            //           templateUrl: basePath + "containers/actions/workflow/ports/ports.html"
+            //         }
+            //       ]
+            //     }
+            //   ],
+            //   condition: action === "update"
+            // },
             {
               "title": gettext("Security Groups"),
               /* eslint-disable max-len */
@@ -559,7 +559,7 @@
 
       // get resources
       getContainer(action, id).then(function () {
-        getVolumes();
+        // getVolumes();
         getNetworks();
         securityGroup.query().then(onGetSecurityGroups);
         zun.getZunAvailabilityZones().then(onGetZunServices);
@@ -641,21 +641,21 @@
       }
 
       // get available cinder volumes
-      function getVolumes() {
-        return cinder.getVolumes().then(onGetVolumes);
-      }
+      // function getVolumes() {
+      //   return cinder.getVolumes().then(onGetVolumes);
+      // }
 
-      function onGetVolumes(response) {
-        push.apply(model.availableCinderVolumes,
-          response.data.items.filter(function(volume) {
-            return volume.status === "available";
-          }));
-        model.availableCinderVolumes.forEach(function(volume) {
-          volume.selected = false;
-          return volume;
-        });
-        return response;
-      }
+      // function onGetVolumes(response) {
+      //   push.apply(model.availableCinderVolumes,
+      //     response.data.items.filter(function(volume) {
+      //       return volume.status === "available";
+      //     }));
+      //   model.availableCinderVolumes.forEach(function(volume) {
+      //     volume.selected = false;
+      //     return volume;
+      //   });
+      //   return response;
+      // }
 
       // get available neutron networks and ports
       function getNetworks() {
